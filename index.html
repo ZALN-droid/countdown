@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Countdown</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#91AC97;
+  font-family:"Times New Roman", serif;
+  overflow:hidden;
+}
+
+/* 1:1 square */
+.square{
+  position:relative;
+
+  width:min(90vw, 90vh);
+  aspect-ratio:1 / 1;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  overflow:hidden;
+}
+
+/* image layer */
+#bgImage{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  display:none;
+}
+
+/* text layer */
+.content{
+  position:relative;
+  z-index:2;
+
+  text-align:center;
+  color:white;
+}
+
+#days{
+  font-size:clamp(48px, 10vw, 90px);
+}
+
+#text{
+  font-size:clamp(18px, 3vw, 28px);
+  margin-top:12px;
+  letter-spacing:1px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="square">
+
+  <img id="bgImage">
+
+  <div class="content" id="countdownContent">
+    <div id="days"></div>
+    <div id="text">To our special day.</div>
+  </div>
+
+</div>
+
+<script>
+const targetDate = new Date("2026-11-28T00:00:00");
+
+function updateCountdown(){
+
+  const now = new Date();
+
+  const today = new Date().toDateString();
+
+  const nov28 = new Date("2026-11-28T00:00:00").toDateString();
+  const nov29 = new Date("2026-11-29T00:00:00").toDateString();
+
+  const img = document.getElementById("bgImage");
+  const countdown = document.getElementById("countdownContent");
+
+  // 28 NOVEMBER
+  if(today === nov28){
+
+    img.src = "nov28.jpg";
+    img.style.display = "block";
+
+    // hide countdown completely
+    countdown.style.display = "none";
+
+    return;
+  }
+
+  // 29 NOVEMBER
+  if(today === nov29){
+
+    img.src = "nov29.jpg";
+    img.style.display = "block";
+
+    // hide countdown completely
+    countdown.style.display = "none";
+
+    return;
+  }
+
+  // NORMAL COUNTDOWN DAYS
+  img.style.display = "none";
+  countdown.style.display = "block";
+
+  const diff = targetDate - now;
+
+  let daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+  if(daysLeft < 0){
+    daysLeft = 0;
+  }
+
+  document.getElementById("days").innerText = daysLeft + " days";
+}
+
+updateCountdown();
+
+setInterval(updateCountdown, 1000 * 60 * 60);
+</script>
+
+</body>
+</html>
